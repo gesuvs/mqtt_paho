@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.yml": "yaml",
+    "*.rmd": "markdown",
+    "string.h": "c",
+    "mqttclient.h": "c"
+  }
+}
