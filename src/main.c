@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "MQTTClient.h"
-#define ADDRESS "tcp://localhost:1883"
+
+// #define ADDRESS "tcp://localhost:1883"
+#define ADDRESS getenv("MQTT_BROKER")
 #define CLIENTID "ExampleClientSub"
 #define TOPIC "t_mqqt_teste"
-#define PAYLOAD "Hello World!"
 #define QOS 1
 #define TIMEOUT 10000L
 
@@ -21,26 +22,34 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 {
 	int i;
 	char *payloadptr;
+
 	printf("Message arrived\n");
-	printf("     topic: %s\n", topicName);
-	printf("   message: ");
+	printf("topic: %s\n", topicName);
+	printf("message: ");
+
 	payloadptr = message->payload;
+
 	for (i = 0; i < message->payloadlen; i++)
 	{
 		putchar(*payloadptr++);
 	}
+
 	putchar('\n');
 	MQTTClient_freeMessage(&message);
 	MQTTClient_free(topicName);
+
 	return 1;
 }
+
 void connlost(void *context, char *cause)
 {
 	printf("\nConnection lost\n");
 	printf("     cause: %s\n", cause);
 }
+
 int main(int argc, char *argv[])
 {
+
 	MQTTClient client;
 	MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 	int rc;
@@ -54,9 +63,11 @@ int main(int argc, char *argv[])
 		printf("Failed to connect, return code %d\n", rc);
 		exit(EXIT_FAILURE);
 	}
-	printf("Subscribing to topic %s\nfor client %s using QoS%d\n\n"
-				 "Press Q<Enter> to quit\n\n",
-				 TOPIC, CLIENTID, QOS);
+	printf("TOPIC: %s\n"
+				 "CLIENT: %s\n"
+				 "QoS: %d\n"
+				 "ADDRESS: %s\n",
+				 TOPIC, CLIENTID, QOS, ADDRESS);
 	MQTTClient_subscribe(client, TOPIC, QOS);
 	while (1)
 	{
