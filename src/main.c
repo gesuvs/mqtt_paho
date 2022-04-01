@@ -3,8 +3,8 @@
 #include <string.h>
 #include "MQTTClient.h"
 
-// #define ADDRESS "tcp://localhost:1883"
-#define ADDRESS getenv("MQTT_BROKER")
+#define ADDRESS "tcp://172.17.0.2:1883"
+// #define ADDRESS getenv("MQTT_BROKER")
 #define CLIENTID "ExampleClientSub"
 #define TOPIC "t_mqqt_teste"
 #define QOS 1
